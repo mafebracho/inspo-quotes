@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A1BC90C2646BDC400C09C31 /* KlarnaMobileSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 1A1BC90B2646BDC400C09C31 /* KlarnaMobileSDK */; };
 		1A70FD4A25260B5C0052071A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A70FD4925260B5C0052071A /* StoreKit.framework */; };
 		AD18A83E21285CAF00F6BF05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD18A83D21285CAF00F6BF05 /* AppDelegate.swift */; };
 		AD18A84321285CAF00F6BF05 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD18A84121285CAF00F6BF05 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A1BC90C2646BDC400C09C31 /* KlarnaMobileSDK in Frameworks */,
 				1A70FD4A25260B5C0052071A /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +105,9 @@
 			dependencies = (
 			);
 			name = InspoQuotes;
+			packageProductDependencies = (
+				1A1BC90B2646BDC400C09C31 /* KlarnaMobileSDK */,
+			);
 			productName = InspoQuotes;
 			productReference = AD18A83A21285CAF00F6BF05 /* InspoQuotes.app */;
 			productType = "com.apple.product-type.application";
@@ -132,6 +137,9 @@
 				Base,
 			);
 			mainGroup = AD18A83121285CAF00F6BF05;
+			packageReferences = (
+				1A1BC90A2646BDC400C09C31 /* XCRemoteSwiftPackageReference "klarna-mobile-sdk-spm" */,
+			);
 			productRefGroup = AD18A83B21285CAF00F6BF05 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -361,6 +369,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A1BC90A2646BDC400C09C31 /* XCRemoteSwiftPackageReference "klarna-mobile-sdk-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/klarna/klarna-mobile-sdk-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.41;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A1BC90B2646BDC400C09C31 /* KlarnaMobileSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A1BC90A2646BDC400C09C31 /* XCRemoteSwiftPackageReference "klarna-mobile-sdk-spm" */;
+			productName = KlarnaMobileSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AD18A83221285CAF00F6BF05 /* Project object */;
 }

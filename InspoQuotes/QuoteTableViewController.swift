@@ -8,6 +8,7 @@
 
 import UIKit
 import StoreKit
+import KlarnaMobileSDK
 
 class QuoteTableViewController: UITableViewController, SKPaymentTransactionObserver {
     
@@ -40,6 +41,10 @@ class QuoteTableViewController: UITableViewController, SKPaymentTransactionObser
             showPremiumQuotes()
         }
     }
+    
+    // MARK: - Private properties
+    
+    private var klarnaHeightConstraint: NSLayoutConstraint?
     
     // MARK: - Table view data source
     
@@ -80,20 +85,48 @@ class QuoteTableViewController: UITableViewController, SKPaymentTransactionObser
         
     }
     
+    // MARK: - Klarna payment methods
+    
+    private func showKlarnaView() {
+        // Create the view
+        let paymentView = KlarnaPaymentView(category: "pay_over_time", eventListener: self)
+
+        // Add as subview
+        paymentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(paymentView)
+
+        // Create a height constraint that we'll update as its height changes.
+        self.klarnaHeightConstraint = paymentView.heightAnchor.constraint(equalToConstant: 500)
+        klarnaHeightConstraint?.isActive = true
+        paymentView.load()
+        
+        paymentView.initialize(clientToken: "clientToken", returnUrl: URL(string: "inspoquotes")!)
+        
+        NSLayoutConstraint.activate([
+            paymentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            paymentView.widthAnchor.constraint(equalToConstant: 350),
+            paymentView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+//            paymentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            paymentView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+    
     // MARK: - In-App purchase methods
 
-    func buyPremiumQuotes() {
-        if SKPaymentQueue.canMakePayments() {
-            
-            let paymentRequest = SKMutablePayment()
-            paymentRequest.productIdentifier = productID
-            SKPaymentQueue.default().add(paymentRequest)
-            
-        } else {
-            
-            print("Nope")
-            
-        }
+    private func buyPremiumQuotes() {
+        showKlarnaView()
+        
+//        if SKPaymentQueue.canMakePayments() {
+//
+//            let paymentRequest = SKMutablePayment()
+//            paymentRequest.productIdentifier = productID
+//            SKPaymentQueue.default().add(paymentRequest)
+//
+//        } else {
+//
+//            print("Nope")
+//
+//        }
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
@@ -128,7 +161,7 @@ class QuoteTableViewController: UITableViewController, SKPaymentTransactionObser
         }
     }
     
-    func showPremiumQuotes() {
+    private func showPremiumQuotes() {
         
         UserDefaults.standard.setValue(true, forKey: productID)
         quotesToShow.append(contentsOf: premiumQuotes)
@@ -136,7 +169,7 @@ class QuoteTableViewController: UITableViewController, SKPaymentTransactionObser
         
     }
     
-    func isPurchased() -> Bool {
+    private func isPurchased() -> Bool {
         let purchaseStatus = UserDefaults.standard.bool(forKey: productID)
         if purchaseStatus {
             print("Previously purchased")
@@ -153,4 +186,40 @@ class QuoteTableViewController: UITableViewController, SKPaymentTransactionObser
         
     }
     
+}
+
+extension QuoteTableViewController: KlarnaPaymentEventListener {
+    
+    func klarnaInitialized(paymentView: KlarnaPaymentView) {
+        paymentView.load()
+        print("Klarna initialized")
+    }
+    
+    func klarnaLoaded(paymentView: KlarnaPaymentView) {
+        
+    }
+    
+    func klarnaLoadedPaymentReview(paymentView: KlarnaPaymentView) {
+        
+    }
+    
+    func klarnaAuthorized(paymentView: KlarnaPaymentView, approved: Bool, authToken: String?, finalizeRequired: Bool) {
+        
+    }
+    
+    func klarnaReauthorized(paymentView: KlarnaPaymentView, approved: Bool, authToken: String?) {
+        
+    }
+    
+    func klarnaFinalized(paymentView: KlarnaPaymentView, approved: Bool, authToken: String?) {
+        
+    }
+    
+    func klarnaResized(paymentView: KlarnaPaymentView, to newHeight: CGFloat) {
+        klarnaHeightConstraint?.constant = newHeight
+    }
+    
+    func klarnaFailed(inPaymentView paymentView: KlarnaPaymentView, withError error: KlarnaPaymentError) {
+        print("Klarna failed \(error.localizedDescription)")
+    }
 }

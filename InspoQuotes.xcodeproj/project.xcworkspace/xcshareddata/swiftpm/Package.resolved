@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "KlarnaMobileSDK",
+        "repositoryURL": "https://github.com/klarna/klarna-mobile-sdk-spm",
+        "state": {
+          "branch": null,
+          "revision": "3b48c8a8614a219df0305f76ef932561e0974a86",
+          "version": "2.0.41"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
